@@ -13,13 +13,24 @@ class PostsController < ApplicationController
 	end
 
 	def create
-		post = Post.create(params[:post])
-		redirect_to post_path(post)
+		@post = Post.new(post_params)
+		if @post.save
+			redirect_to post_path(@post)
+		else
+			render :new
+		end
 	end
 
 	def edit
 		@post = Post.find(params[:id])
-		@categories = Category.all
+
+		@post.update(post_params)
+
+		if @post.save
+			redirect_to post_path(@post)
+		else
+			render :edit
+		end
 	end
 
 	def update
